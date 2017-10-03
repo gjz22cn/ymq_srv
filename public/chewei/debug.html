@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+		<meta name="viewport" content="width=device-width,initial-scale=1" />
+		<script type="text/javascript" src="js/jquery.1.9.1.js"></script>
+		<script type="text/javascript" src="js/jquery-form.js" ></script>
+		<script type="text/javascript" src="js/jquery.validate.min.js"></script>
+        <link rel="stylesheet" href="css/all.css "/>
+		<link rel="stylesheet" href="css/addDevice.css" />
+		<title fileNam="debug">API调试</title>
+	</head>
+	<body>
+		<!--记录数据-->
+		<div id="fileName" fileNam="debug"></div>
+		<!--记录数据-->
+		<div class="pluginContainer">
+			<div class="pluginTitle">API调试</div>
+            <form id="debug" name="debug" action="">
+                <span class="nameSpan">方法</span>
+                <select class="inputDesc" id="method" >
+                    <option value="GET" selected="selected">GET</option>
+                    <option value="PUT">PUT</option>
+                    <option value="POST">POST</option>
+                    <option value="DELETE">DELETE</option>
+                </select>
+
+                <span class="nameSpan">路径</span><input class="inputDesc" id="path" value="/"></input>
+                <!--<select class="inputDesc" id="path" >
+                    <option value="/parking_manage" selected="selected">/parking_manage</option>
+                    <option value="/parking_app" >/parking_app</option>
+                    <option value="/parking_dev" selected="selected">/parking_dev</option>
+                </select>-->
+
+                <span class="nameSpan">参数:PUT/POST/DELTE: data, GET: filter</span><textarea class="inputDesc" id="param" style="height: 160px;">{}</textarea>
+                <span class="nameSpan">结果</span><textarea class="inputDesc" id="result" style="height: 200px;"></textarea>
+            </form>
+            <input class="inputSubmit" type="button" onclick="debugSubmit()" value="提交"></input>
+            <div style="height: 1px;"></div>
+		</div>
+	</body>
+	<script type="text/javascript">
+        function debugSubmit() {
+            var method = $("#method").val();
+            var path = $('#path').val();
+            var data = $('#param').val();
+            //var url = "http://"+window.location.host + path;
+
+            if (method == "GET") {
+                $.ajax({
+                    url: path+"?filter="+JSON.stringify(JSON.parse(data)),
+                    //url: path,
+                    dataType: 'json',
+                    method: 'GET',
+                    success: function(data) {
+                        $('#result').text(JSON.stringify(data, null, 4));
+                    },
+                    error: function(xhr) {
+                        $('#result').text(JSON.stringify(xhr, null, 4));
+                    }
+                });
+            } else {
+                data = JSON.stringify(JSON.parse(data));
+                $.ajax({
+                    type: method,
+                    url: path,
+                    async: false, // 使用同步方式
+                    data: data,
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function(data) {
+                        $('#result').text(JSON.stringify(data, null, 4));
+                    }
+                });
+            }
+        }
+    </script>
+</html>

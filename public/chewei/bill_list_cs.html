@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<link rel="stylesheet" href="css/all.css" />
+		<link rel="stylesheet" href="css/public.css" />
+		<link rel="stylesheet" href="css/router_currentsource.css" />
+		<script type="text/javascript" src="js/jquery.1.9.1.js"></script>
+		<script type="text/javascript" src="js/vue.js"></script>
+		<title id="name" fileNam="plugin">账单明细</title>
+	</head>
+
+	<body onload="load()">
+		<div id="vueApp">
+			<!--记录数据-->
+			<div id="fileName" fileNam="router_historyresource" isroot="root"></div>
+			<!--记录数据-->
+			<div id="pluginContainer" fileNam="plugin" isroot="root">
+				<div class="pluginTitle">
+					<!-- <a class="backBtn" >返回</a> -->筛选</div>
+
+				<div>
+					<table style="margin-left:40px;margin-top:20px;margin-bottom:20px;">
+						<tr>
+							<td style="width:80px">小区名:</td>
+                            <td style="width:300px">
+                                <select v-model="xq_sel" >
+                                    <option v-for="option in xq_ops" v-bind:value="option.value">
+                                    {{ option.text }}
+                                    </option>
+                                </select>
+                            </td>
+							<td style="width:80px">车牌:</td>
+                            <td style="width:300px"><input  type="text" style="width:128px;" v-model="chepai"></input></td>
+						</tr>
+						<tr>
+                            <td>状态:</td>
+                            <td style="width:300px">
+                                <select v-model="st_sel" >
+                                    <option v-for="option in st_ops" v-bind:value="option.value">
+                                    {{ option.text }}
+                                    </option>
+                                </select>
+                            </td>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td><button class="redBtn" v-on:click="refresh"  style="background: orange;">筛选</button></td>
+							<td><button class="redBtn" v-on:click="clear"  style="background: orange;">清除</button></td>
+                            <td></td>
+                            <td></td>
+						</tr>
+					</table>
+				</div>
+				<div style="height: 20px;background: rgba(0,0,0,0.05);"></div>
+
+                <div class="pluginTitle">账单明细</div>
+				<div class="tableContainer" >
+					<table id="table" style="margin-top: 10px;">
+						<tr>
+							<th>车牌</th>
+							<th>小区</th>
+							<th>进场时间</th>
+                            <th>出场时间</th>
+							<th>停车费(元)</th>
+						</tr>
+						<tr id="cell" class="cell" v-for="dic in message">
+							<td>{{dic.chepai}}</td>
+							<td>{{dic.xqname}}</td>
+							<td>{{dic.in_time == "Invalid date" ? "" : dic.in_time}}</td>
+							<td>{{dic.out_time == "Invalid date" ? "" : dic.out_time}}</td>
+							<td>{{dic.amount}}</td>
+						</tr>
+
+					</table>
+				</div>
+				<div style="height: 15px;"></div>
+			</div>
+		</div>
+	</body>
+	<script type="text/javascript" src="js/public.js"></script>
+    <script>
+        var userInfo = JSON.parse(window.localStorage.getItem('userInfo'));
+        var vm = new Vue({
+        el: '#vueApp',
+        data: {
+        xq_sel: '',
+        xq_ops: [
+            { text: '', value: '' },
+        ],
+        chepai: '',
+        st_sel: '',
+        st_ops: [
+            { text: '所有状态', value: '' },
+            { text: '未付订金', value: 'pre' },
+            { text: '已付订金', value: 'progress' },
+            { text: '取消预定', value: 'cancel' },
+            { text: '未支付离场', value: 'prepay' },
+            { text: '支付未离场', value: 'outpay' },
+            { text: '支付离场', value: 'finish' },
+        ],
+        message: []
+        },
+        methods: {
+        clear: function() {
+            this.xq_sel='';
+            this.chepai='';
+            this.st_sel='';
+            this.reload();
+        },
+        refresh:function(){
+            this.reload();
+        },
+        reload: function() {
+                    var filter = {};
+
+                    if (this.xq_sel != "") {
+                        filter.community_id = this.xq_sel;
+                    }
+                    if (this.chepai != "") {
+                        filter.chepai = this.chepai;
+                    }
+                    if (this.st_sel != "") {
+                        filter.state = this.st_sel;
+                    }
+
+                    priAjaxGet("/parking/bill?filter="+encodeURI(JSON.stringify(filter)), "",
+                            function(data) {
+                            if (data.ret == 0) {
+                            vm.message = data.data;
+                            } else {
+                            alert(data.msg);
+                            }
+                            },
+                            function() {
+                            alert("获取账单明细失败！");
+                            });                    
+                },
+        getXiaoquNameList: function (ppsId) {
+                               var _self = this;
+                               var filterStr = "";
+                               if (ppsId != "") {
+                                   filterStr = "filter="+JSON.stringify({pps_id: ppsId});
+                               }
+
+                               priAjaxGet("/xiaoqu/namelist", filterStr,
+                                       function(data) {
+                                       if (data.ret == 0) {
+                                       _self.xq_ops.splice(1, vm.xq_ops.length-1);
+                                       for(var idx in data.data) {
+                                       _self.xq_ops.push({text: data.data[idx].name, value: data.data[idx].id});
+                                       }
+                                       } else {
+                                       //alert(data.msg);
+                                       }
+                                       },
+                                       function() {
+                                       //alert("获取账单明细失败！");
+                                       });                    
+                           },
+        }
+
+        });
+
+        function load() {
+            vm.reload();
+            vm.getXiaoquNameList();
+        }
+    </script>
+
+</html>

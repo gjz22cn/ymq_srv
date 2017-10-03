@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+		<meta name="viewport" content="width=device-width,initial-scale=1" />
+		<script type="text/javascript" src="js/jquery.1.9.1.js"></script>
+		<script type="text/javascript" src="js/jquery.validate.min.js"></script>
+		<script type="text/javascript" src="js/jquery-form.js"></script>
+		<link rel="stylesheet" href="css/all.css" />
+		<link rel="stylesheet" href="css/addPlugin.css" />
+		<title fileNam="addLircDevice">我的信息</title>
+	</head>
+
+	<body onload="loadpage()">
+		<!--记录数据-->
+		<div id="fileName" fileNam="xiaoquManager"></div>
+		<!--记录数据-->
+		<div id="pluginContainer">
+			<div class="pluginTitle">
+				<a class="backBtn">取消</a>小区信息</div>
+
+			<form id="addPluginForm">
+				<div class="inputContainer">
+                    <!--<span class="nameSpan">cid</span><input v-bind:value="info.cid" class="inputName" type="text" name="cid" placeholder="" />-->
+					<span class="nameSpan">城市</span><input v-bind:value="info.city" class="inputName" type="text" name="city" placeholder="" />
+					<span class="nameSpan">区</span><input v-bind:value="info.district" class="inputName" type="text" name="district" placeholder="" />
+					<span class="nameSpan">名称</span><input v-bind:value="info.name" class="inputName" type="text" name="name" placeholder="" />
+					<span class="nameSpan">入口地址</span><input  v-bind:value="info.addr_in" class="inputName" type="text" name="addr_in" placeholder="" />
+					<span class="nameSpan">出口地址</span><input v-bind:value="info.addr_out" class="inputName" type="text" name="addr_out" placeholder="" />
+					<span class="nameSpan">经度</span><input v-bind:value="info.longitude" class="inputName" type="text" name="longitude" placeholder="" />
+				    <span class="nameSpan">维度</span><input v-bind:value="info.latitude" class="inputName" type="text" name="latitude" placeholder="" />
+					<span class="nameSpan">联系人</span><input v-bind:value="info.contacts" class="inputName" type="text" name="contacts" placeholder="" />
+					<span class="nameSpan">联系人手机</span><input v-bind:value="info.phone" class="inputName" type="text" name="phone" placeholder="" />
+					<span class="nameSpan">Email</span><input  v-bind:value="info.email" class="inputName" type="text" name="email" placeholder="" />
+					<span class="nameSpan">parking_num_total</span><input v-bind:value="info.parking_num_total" class="inputName" type="text" name="parking_num_total" placeholder="" />
+					<span class="nameSpan">timeStart</span><input v-bind:value="info.parking_time_start" class="inputName" type="text" name="parking_time_start" placeholder="" />
+					<span class="nameSpan">timeEnd</span><input v-bind:value="info.parking_time_end" class="inputName" type="text" name="parking_time_end" placeholder="" />
+					<span class="nameSpan">rate_type</span><input v-bind:value="info.rate_type" class="inputName" type="text" name="rate_type" placeholder="" />
+                    <span class="nameSpan">rate</span><input v-bind:value="info.rate" class="inputName" type="text" name="rate" placeholder="" />
+
+					<input class="inputSubmit" type="button" value="提交" onclick="apply()"/>
+				</div>
+			</form>
+		</div>
+	</body>
+
+	<script type="text/javascript" src="js/vue.js"></script>
+	<script>
+        var userInfo = JSON.parse(window.localStorage.getItem('userInfo'));        
+		var vm = new Vue({
+			el: '#pluginContainer',
+			data:{
+                info:{}
+			},
+			methods:{
+                reload: function() {
+                    var _self = this;
+
+                    priAjaxGet("/xiaoqu/"+userInfo.roleId,
+                            "",
+                            function(retData) {
+                                if (retData.ret == 0) {
+                                    _self.info = retData.data;
+                                }
+                            },
+                            function () {
+                                //_self.loadTestData();
+                            });
+
+                }
+			}
+			
+		});
+		
+		
+		function apply() {
+			$("#addPluginForm").ajaxSubmit({
+				type: 'put',
+				url: '/xiaoqu/'+userInfo.roleId,
+				cache: false,
+				data: {
+                    id: vm.info.id
+				},
+				success: function(data) {
+					alert("成功");
+				},
+				error: function() {
+					alert("失败");
+				}
+			});
+		}
+		
+        function loadpage() {
+            vm.reload();
+        }
+	</script>
+	<script type="text/javascript" src="js/public.js"></script>
+</html>

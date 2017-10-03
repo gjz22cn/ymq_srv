@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<link rel="stylesheet" href="css/head.css" />
+		<title>联系我们</title>
+	</head>
+
+	<body class="blur-bg">
+		<div id="head">
+			<a class="logo" href="index.html">共享车位</a>
+			<a class="main" href="index.html">主页</a>
+			<a class="contact_sel" href="contactUs.html">联系我们</a>
+			<a class="login" href="login.html">登陆</a>
+		</div>
+		<div id="contactway">
+			<div class="person">
+				<div>联系人1</div>
+				<div style="margin-top:10px"><span style="margin-right:10px;">PHONE : </span><span>18616996720</span></div>
+				<div><span style="margin-right:10px">E-MAIL : </span><span>23483544@qq.com</span> </div>
+			</div>
+			<div class="person">
+				<div>联系人2</div>
+				<div style="margin-top:10px"><span style="margin-right:10px;">PHONE : </span><span>18621534710</span></div>
+				<div><span style="margin-right:10px;">E-MAIL : </span><span>237927330@qq.com</span></div>
+			</div>
+		</div>
+	</body>
+    <script src="js/jquery-1.11.2.min.js"></script>
+	<script>
+		
+		var islogin = window.sessionStorage.getItem('islogin');
+
+		//判断是否登陆
+		if(islogin == 'true') {
+			$(".login").text("控制台");
+			$(".login").attr("href", window.location.protocol + "//" + window.location.host + "/rolemain");
+		} else {
+			$(".login").text("登陆");
+			$(".login").attr("href", window.location.protocol + "//" + window.location.host + "/login.html");
+        }
+	</script>
+
+</html>

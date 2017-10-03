@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<link rel="stylesheet" href="css/all.css" />
+		<link rel="stylesheet" href="css/public.css" />
+		<link rel="stylesheet" href="css/router_currentsource.css" />
+		<script type="text/javascript" src="js/jquery.1.9.1.js"></script>
+		<script type="text/javascript" src="js/vue.js"></script>
+		<title id="name" fileNam="plugin">小区管理</title>
+	</head>
+
+	<body onload="load()">
+		<div id="vueApp">
+			<!--记录数据-->
+			<div id="fileName" fileNam="router_historyresource" isroot="root"></div>
+			<!--记录数据-->
+			<div id="pluginContainer" fileNam="plugin" isroot="root">
+				<div class="pluginTitle">
+					<!-- <a class="backBtn" >返回</a> -->筛选</div>
+
+				<div>
+					<table style="margin-left:20px;margin-top:20px;margin-bottom:20px">
+						<tr>
+							<td>厂商名称:</td>
+							<td><input id="csname" type="text" style="width:600px;" name="csname"></isindex></td>
+							<td style="padding-left:20px;"><button  class="redBtn" v-on:click="refresh"  style="background:orange;">筛选</button></td>
+						</tr>
+					</table>
+				</div>
+				<div style="height: 20px;background: rgba(0,0,0,0.05);"></div>
+
+                <div class="pluginTitle" style="position: relative;"><a>厂商信息</a><button class="blueBut" v-on:click="add" type='button' style="position: absolute;right: 5px;top: 4px;">添加</button></div>
+				<div class="tableContainer" >
+					<table id="table" style="margin-top: 10px;">
+						<tr>
+							<th>厂商名称</th>
+							<th>联系人</th>
+							<th>联系人手机</th>
+							<th>Email</th>
+							<th>停车场数目</th>
+							<th>注册时间</th>
+							<th style="text-align: center;">管理</th>
+						</tr>
+						<tr id="cell" class="cell" v-for="dic in message">
+							<td>{{dic.name}}</td>
+							<td>{{dic.contacts}}</td>
+							<td>{{dic.phone}}</td>
+							<td>{{dic.email}}</td>
+							<td>{{dic.parkNum}}</td>
+							<td>{{dic.createdAt}}</td>
+							<td style="text-align: center;">
+								<a v-on:click="edit($event)" class="pluginVersion blueBut edit">编辑</a>
+								<a v-on:click="deleteItem($event);" v-bind:info="getInfo(dic)" class="pluginDelete redBtn">删除</a>
+							</td>
+							<!--<td ><a class="pluginVersion blueBut" href="router_retransmission.html">详情</a></td>-->
+						</tr>
+
+					</table>
+				</div>
+				<div style="height: 15px;"></div>
+			</div>
+		</div>
+	</body>
+	<script type="text/javascript" src="js/public.js"></script>
+	<script>
+        var editPage = "editManufacture.html";
+		var vm = new Vue({
+			el: '#vueApp',
+			data: {
+                message: []
+			},
+			methods: {
+				getInfo: function(dic) {
+					return JSON.stringify(dic);
+				},
+				//添加
+				add:function(){
+                    var manuInfo = {
+                        action: "add"
+                    };
+                    window.localStorage.setItem('manuInfo', JSON.stringify(manuInfo));
+					location.href = editPage;
+				},
+                deleteReq: function(id) {
+                    priAjaxDel("/pps/"+id,
+                            function(data) {
+                                if (data.ret == 0) {
+                                    this.reload();
+                                }
+                            },
+                            function() {
+                                alert("删除失败！");
+                            });
+                },
+				deleteItem: function(athis) {
+					var info = $(athis.currentTarget).attr("info");
+					var confirm1 = confirm("确定删除？");
+					if(confirm) {
+                        var manuInfo = JSON.parse(info);
+						this.deleteReq(manuInfo.id);
+					}
+				},
+				edit: function(athis) {
+					var info = $(athis.currentTarget).next().attr("info");
+                    var manuInfo = JSON.parse(info);
+                    manuInfo.action = "edit";
+                    window.localStorage.setItem('manuInfo', JSON.stringify(manuInfo));
+					$(athis.currentTarget).attr({
+						href: editPage
+					});
+				},
+				refresh:function(){
+					var csname = $("#csname").val();
+                    this.query(csname);
+				},
+                reload: function() {
+                    this.query("");
+                },
+                query: function(csname) {
+                    var filter = {};
+                    if (csname != "") {
+                        filter.name = csname;
+                    }
+
+                    priAjaxGet("/pps?filter="+encodeURI(JSON.stringify(filter)), "",
+                            function(data) {
+                                if (data.ret == 0) {
+                                    vm.message = data.data;
+                                } else {
+                                    alert(msg);
+                                }
+                            },
+                            function() {
+                                alert("获取厂商信息失败！");
+                            });
+                }
+			}
+
+		});
+
+        function load() {
+            vm.reload();
+        }
+	</script>
+
+</html>
