@@ -28,7 +28,7 @@ module.exports = {
       user : "root",
       host : "139.196.39.19",
       ref  : "origin/master",
-      repo : "https://github.com/lynn1982/carshare_srv.git",
+      repo : "https://github.com/gjz22cn/ymq_srv.git",
       path : "/root/release",
       "post-deploy" : "npm install && pm2 startOrRestart ecosystem.json --env production"
     },
@@ -36,7 +36,7 @@ module.exports = {
       user : "root",
       host : "139.196.39.19",
       ref  : "origin/master",
-      repo : "https://github.com/lynn1982/carshare_srv.git",
+      repo : "https://github.com/gjz22cn/ymq_srv.git",
       path : "/root/code",
       "post-deploy" : "npm install && pm2 startOrRestart ecosystem.json --env dev",
       env  : {
