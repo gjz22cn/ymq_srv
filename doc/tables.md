@@ -42,6 +42,7 @@
 |end |time|结束时间|时：分|
 |addr |varchar(128)|活动地址||
 |comment|varchar(256)|备注||
+|corpId    |int   |社团ID|foreign key|
 
 ### 活动成员(act_mem)
 |字段   |类型  |说明   |备注   |
