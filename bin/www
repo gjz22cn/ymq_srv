@@ -94,7 +94,7 @@ function onListening() {
  * MQTT broker for devices.
  */
 
-var dev_msg = require("../control/dev_msg");
+//var dev_msg = require("../control/dev_msg");
 var mosca = require('mosca');
 var MqttServer = new mosca.Server({
     port: 8883
@@ -110,7 +110,7 @@ MqttServer.on('clientConnected', function(client){
 MqttServer.on('published', function(packet, client) {
     var topic = packet.topic;
     console.log('message-arrived--->','topic ='+topic+',message = '+ packet.payload.toString());
-    dev_msg.message_handle(packet);
+    //dev_msg.message_handle(packet);
 });
   
 MqttServer.on('ready', function(){

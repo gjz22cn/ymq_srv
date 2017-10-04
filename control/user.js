@@ -7,8 +7,6 @@ var User = require('../model/user');
 var config = require('../config');
 var smskey = require('../middleware/smskey');
 var userRole = require('../middleware/role');
-var Pps = require('../model/pps');
-var Community = require('../model/community');
 
 const SMSClient = require('@alicloud/sms-sdk');
 
@@ -260,22 +258,6 @@ exports.verCodeLogin = function(req, res, next) {
             }
             user.role = "system";
             user.roleId = sys[0].id;
-        } else if (loginType == "changshang") {
-            var pps = await Pps.query(filter1);
-            if (!pps) {
-                ep.emit('err', '没有此厂商管理员帐号！');
-                return;
-            }
-            user.role = "changshang";
-            user.roleId = pps[0].id;
-        } else if (loginType == "xiaoqu") {
-            var xiaoqu = await Community.query(filter1);
-            if (!xiaoqu) {
-                ep.emit('err', '没有此小区管理员帐号！');
-                return;
-            }
-            user.role = "xiaoqu";
-            user.roleId = xiaoqu[0].id;
         } else if (loginType == "user") {
             filter.role = "user";
             var usr = await User.query(filter);

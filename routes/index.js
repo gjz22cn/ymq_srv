@@ -1,13 +1,10 @@
 var express = require('express');
 var router = express.Router();
 var user = require('../control/user');
-var park = require('../control/parking');
 var auth = require('../middleware/auth');
-var xiaoqu = require('../control/xiaoqu');
 var config = require('../config');
 var crypto = require('crypto');
 var User = require('../model/user');
-var pps = require('../control/pps');
 var eventproxy = require('eventproxy');
 const logger = require('../lib/logger').logger('file');
 
@@ -48,9 +45,9 @@ router.get('/rolemain', function(req, res, next) {
 
 
 router.post('/user', user.message_handle);
-router.post('/parking', auth.userRequired, park.message_handle);
-router.post('/xiaoqu', auth.userRequired, xiaoqu.message_handle);
-router.post('/pps', auth.userRequired, pps.message_handle);
+//router.post('/parking', auth.userRequired, park.message_handle);
+//router.post('/xiaoqu', auth.userRequired, xiaoqu.message_handle);
+//router.post('/pps', auth.userRequired, pps.message_handle);
 
 router.get('/create_admin', function(req, res, next) {
 
@@ -113,6 +110,7 @@ router.get('/user/logout', auth.userRequired, user.logout);
 router.get('/user/:id', auth.userRequired, user.getone);
 router.put('/user/:id', auth.userRequired, user.update);
 
+/*
 router.post('/pps_new', auth.userRequired, pps.add);
 router.get('/pps/namelist', auth.userRequired, pps.getNameList);
 router.get('/pps', auth.userRequired, pps.get);
@@ -139,6 +137,6 @@ router.post('/parking/cancelorder', auth.userRequired, park.cancelOrder);
 router.post('/parking/preoutpay', auth.userRequired, park.preOutPay);
 router.post('/parking/postoutpay', auth.userRequired, park.postOutPay);
 router.get('/parking/bill', auth.userRequired, park.getBill);
-
+*/
 
 module.exports = router;
