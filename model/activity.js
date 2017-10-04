@@ -1,5 +1,6 @@
 var Sequelize = require('sequelize');
 var sequelize = require('../lib/mysql');
+var User = require('./user');
 
 var Acti = sequelize.define('activity', {
     id:{type: Sequelize.INTEGER, primaryKey: true, autoIncrement: true, unique: true},

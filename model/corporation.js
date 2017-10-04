@@ -1,5 +1,6 @@
 var Sequelize = require('sequelize');
 var sequelize = require('../lib/mysql');
+var User = require('./user');
 
 var Corp = sequelize.define('corporation', {
     id:{type: Sequelize.INTEGER, primaryKey: true, autoIncrement: true, unique: true},
@@ -59,7 +60,7 @@ exports.Corp = Corp;
 /* ******************************************
  *                card_mem
  * ****************************************** */
-var Corpm = sequelize.define('corp_men', {
+var Corpm = sequelize.define('corp_mem', {
 }, {
     freezeTableName: true
 }

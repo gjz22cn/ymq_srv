@@ -3,6 +3,8 @@
  * ****************************************** */
 var Sequelize = require('sequelize');
 var sequelize = require('../lib/mysql');
+var User = require('./user');
+var Corp = require('./corporation').Corp;
 
 var Card = sequelize.define('score_card', {
     id:{type: Sequelize.INTEGER, primaryKey: true, autoIncrement: true, unique: true},
@@ -20,19 +22,18 @@ var Card = sequelize.define('score_card', {
 );
 
 Card.belongsTo(User, {foreignKey: 'mgmtUid',  onDelete: 'SET NULL', constraints: false});
-Card.belongsTo(Corp, {foreignKey: 'corpId',  onDelete: 'SET NULL', constraints: false, defaultValue: 1});
+Card.belongsTo(Corp, {foreignKey: 'corpId',  onDelete: 'SET NULL', constraints: false});
 
 var card = Card.sync({force: false});
 
 Card.create = function(card) {
     return Card.create({
-        openId: card.openId,
-        nickName : card.nickName,
+        name: card.name
     });
 };
 
 Card.update = function(card, newCard) {
-    card.nickName = newCard.nickName;
+    card.name = newCard.name;
 
     card.save();
 };

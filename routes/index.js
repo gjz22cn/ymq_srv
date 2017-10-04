@@ -5,6 +5,13 @@ var auth = require('../middleware/auth');
 var config = require('../config');
 var crypto = require('crypto');
 var User = require('../model/user');
+var Corp = require('../model/corporation').Corp;
+var Corpm = require('../model/corporation').Corpm;
+var Acti = require('../model/activity').Acti;
+var Acti = require('../model/activity').Actm;
+var Card = require('../model/scorecard').Card;
+var Cardm = require('../model/scorecard').Cardm;
+var Sitem = require('../model/scorecard').Sitem;
 var eventproxy = require('eventproxy');
 const logger = require('../lib/logger').logger('file');
 
