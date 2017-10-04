@@ -74,10 +74,10 @@
 |cardId |int   | 积分卡id|foreign key<br>default: 1|
 |score |varchar(5)   | 比分|default: "1-1"|
 |date  |date|比赛时间||
-|state|int|计分条目状态|0-未完成,1-完成,default:0|
+|state|ENUM('unfinish','finish')|计分条目状态|default:unfinish|
 |stateL|ENUM('0','1','2')|左边状态|0-确认1,1-确认2,2-已确认|
 |stateR|ENUM('0','1','2')|右边状态|0-确认1,1-确认2,2-已确认|
-|nameLl|varchar(32)|左边选手1名称||
+|nameL1|varchar(32)|左边选手1名称||
 |nameL2|varchar(32)|左边选手2名称||
-|nameRl|varchar(32)|右边选手1名称||
+|nameR1|varchar(32)|右边选手1名称||
 |nameR2|varchar(32)|右边选手2名称||
