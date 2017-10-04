@@ -1,95 +1,42 @@
-
 var Sequelize = require('sequelize');
 var sequelize = require('../lib/mysql');
 
 var User = sequelize.define('user', {
+    id:{type: Sequelize.INTEGER, primaryKey: true, autoIncrement: true, unique: true},
 
-    id: {type: Sequelize.INTEGER, primaryKey: true, autoIncrement: true, unique: true},
-
-    wx_name: {type: Sequelize.STRING},
-
-    wx_id: {type: Sequelize.STRING},
-
-    login_name: {type: Sequelize.STRING(64)},
-
-    passwd: {type: Sequelize.STRING},
-
-    sex: {type: Sequelize.ENUM, values: ['male', 'female']},
-
-    phone_num: {type: Sequelize.CHAR(11)},
-
-    email: {type: Sequelize.STRING},
-
-    car_license: {type: Sequelize.STRING},
-
-    score: {type: Sequelize.INTEGER},
-
-    is_active: {type: Sequelize.BOOLEAN, defaultValue: false},
-
-    is_mgmt: {type: Sequelize.BOOLEAN, defaultValue: false},
-
-    role: {type: Sequelize.ENUM, values: ['system', 'changshang', 'xiaoqu', 'user'], defaultValue: 'user'}
-    
-    }, {
-
+    openId: {type: Sequelize.STRING, unique: true}, // weixin ID
+    phone: {type: Sequelize.STRING(11)},
+    password: {type: Sequelize.STRING(128)},
+    nickName: {type: Sequelize.STRING(128)},
+    gender: {type: Sequelize.ENUM, values:['male', 'female']},
+    country: {type: Sequelize.STRING(16)},
+    province: {type: Sequelize.STRING(16)},
+    city: {type: Sequelize.STRING(16)},
+    avatarUrl: {type: Sequelize.STRING},
+    unionId: {type: Sequelize.STRING(32)},
+    appId: {type: Sequelize.STRING(32)},
+    loginTime: {type: Sequelize.DATE},
+}, {
     freezeTableName: true
-
-    }
+}
 );
 
 var user = User.sync({force: false});
 
-
-User.getUsersByQuery = function(query) {
-    return User.findAll({
-        where: query
-    });
-};
-
-User.newAndSave = function(user) {
+User.create = function(user) {
     return User.create({
-        login_name: user.login_name,
-        passwd: user.passwd,
-        phone_num: user.phone_num,
-        is_active: user.is_active,
-        is_mgmt: user.is_mgmt,
-        role: user.role,
-        email: user.email
+        openId: user.openId,
+        nickName : user.nickName,
     });
 };
 
-User.getUserByPhone = function(phone_num) {
-    return User.findOne({
-        where: {phone_num: phone_num}
-    });
-};
-
-User.getUserByName = function(name) {
-    return User.findOne({
-        where: {login_name: name}
-    });
-};
-
-User.getUserById = function(id) {
-    return User.findOne({
-        where: {id: id}
-    });
-};
-
-User.setUserActive = function(user) {
-    user.is_active = true;
-    user.save();
-};
-
-User.updateUser = function(user, newUser) {
-    user.login_name = newUser.login_name;
-    user.sex = newUser.sex;
-    user.car_license = newUser.car_license;
+User.update = function(user, newUser) {
+    user.nickName = newUser.nickName;
 
     user.save();
 };
 
-User.deleteUser = function(user) {
+User.destroy = function(user) {
     user.destroy();
 };
 
