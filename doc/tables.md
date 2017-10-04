@@ -49,7 +49,7 @@
 |:-----|:-----|:------|:------|
 |actId    |int   | 活动ID|foreign key|
 |userId    |int   | 用户ID|foreign key|
-|people    |int   | 报名人数|default：1|
+|people    |int   | 报名人数|default：0|
 
 ### 计分卡 (score_card)
 |字段   |类型  |说明   |备注   |
