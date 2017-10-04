@@ -1,7 +1,7 @@
 1. 数据库
-   + dbname: cheweidb
+   + dbname: ymqdb
    + type: MySQL
-   + account: chewei/123456
+   + account: ymqc/123456
 
 2. 设备接口
    + MQTT(Mosca)
