@@ -6,15 +6,8 @@ var config = require('../config');
 var crypto = require('crypto');
 var User = require('../model/user');
 
-/*var Corp = require('../model/corporation').Corp;
-var Corpm = require('../model/corporation').Corpm;
-var Acti = require('../model/activity').Acti;
-var Acti = require('../model/activity').Actm;
-var Card = require('../model/scorecard').Card;
-var Cardm = require('../model/scorecard').Cardm;
-var Sitem = require('../model/scorecard').Sitem;*/
-
 var corp = require('../control/corp');
+var acti = require('../control/activity');
 
 var eventproxy = require('eventproxy');
 const logger = require('../lib/logger').logger('file');
@@ -128,26 +121,11 @@ router.delete('/corporation/:id', auth.userRequired, corp.delete);
 router.post('/corporation/join', auth.userRequired, corp.join);
 router.post('/corporation/leave', auth.userRequired, corp.leave);
 
-/*
-router.post('/xiaoqu_new', auth.userRequired, xiaoqu.add);
-router.post('/xiaoqu/searchresult', auth.userRequired, xiaoqu.searchResult);
-router.get('/xiaoqu/namelist', auth.userRequired, xiaoqu.getNameList);
-router.get('/xiaoqu/carinout', auth.userRequired, xiaoqu.getCarInOut);
-router.get('/xiaoqu', auth.userRequired, xiaoqu.get);
-router.get('/xiaoqu/areachewei', xiaoqu.getAreaChewei);
-router.get('/xiaoqu/:id', auth.userRequired, xiaoqu.getone);
-router.get('/xiaoqu/:id/chewei', xiaoqu.getXiaoquChewei);
-router.put('/xiaoqu/:id', auth.userRequired, xiaoqu.update);
-router.delete('/xiaoqu/:id', auth.userRequired, xiaoqu.delete);
-
-router.get('/parking/myhistory', auth.userRequired, park.getMyHistoryPark);
-router.get('/parking/mycurrorder', auth.userRequired, park.getCurrOrder);
-router.post('/parking/preorder', auth.userRequired, park.preOrder);
-router.post('/parking/postorder', auth.userRequired, park.postOrder);
-router.post('/parking/cancelorder', auth.userRequired, park.cancelOrder);
-router.post('/parking/preoutpay', auth.userRequired, park.preOutPay);
-router.post('/parking/postoutpay', auth.userRequired, park.postOutPay);
-router.get('/parking/bill', auth.userRequired, park.getBill);
-*/
+router.post('/activity', auth.userRequired, acti.add);
+router.get('/activity', auth.userRequired, acti.get);
+router.get('/activity/:id', auth.userRequired, acti.getone);
+router.put('/activity/:id', auth.userRequired, acti.update);
+router.delete('/activity/:id', auth.userRequired, acti.delete);
+router.post('/activity/join', auth.userRequired, acti.join);
 
 module.exports = router;

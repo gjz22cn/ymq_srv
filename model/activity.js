@@ -1,6 +1,7 @@
 var Sequelize = require('sequelize');
 var sequelize = require('../lib/mysql');
 var User = require('./user');
+var Corp = require('./corporation').Corp;
 
 var Acti = sequelize.define('activity', {
     id:{type: Sequelize.INTEGER, primaryKey: true, autoIncrement: true, unique: true},
@@ -15,25 +16,27 @@ var Acti = sequelize.define('activity', {
 }
 );
 
-Acti.belongsTo(Acti, {foreignKey: 'ActiId',  onDelete: 'SET NULL', constraints: false});
+Acti.belongsTo(Corp, {foreignKey: 'corpId',  onDelete: 'SET NULL', constraints: false});
 
 var acti = Acti.sync({force: false});
 
 Acti.create = function(acti) {
     return Acti.create({
-        name: acti.name,
-        actAdd1: acti.actAdd1,
-        actAdd2: acti.actAdd2,
-        actAdd3: acti.actAdd3
+        date: acti.date,
+        start: acti.start,
+        end: acti.end,
+        addr: acti.addr,
+        comment: acti.addr,
+        corpId: acti.corpId
     });
 };
 
 Acti.update = function(acti, newActi) {
-    acti.name = newActi.name;
-    acti.actAdd1 = newActi.actAdd1;
-    acti.actAdd2 = newActi.actAdd2;
-    acti.actAdd3 = newActi.actAdd3;
-    acti.memNum = newActi.memNum;
+    acti.date = newActi.date;
+    acti.start = newActi.start;
+    acti.end = newActi.end;
+    acti.addr = newActi.addr;
+    acti.comment = newActi.addr;
 
     acti.save();
 };
