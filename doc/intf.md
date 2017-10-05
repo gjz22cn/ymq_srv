@@ -24,7 +24,7 @@
 |/score_item/[id]|GET|获取计分项信息||
 |/score_item/[id]|PUT|修改计分项信息||
 |/score_item/[id]|DELETE|删除计分项||
-|/score_item/[id]/confirm|POST|左边确认1|{ type: l_1/l_2/r_1/r_2,user_id: 1}||
+|/score_item/[id]/confirm|POST|左边确认1|{ type: l_1/l_2/r_1/r_2,<br>user_id: 1}||
 
 ## 2 返回报文格式
 ```
