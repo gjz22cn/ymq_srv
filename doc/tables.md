@@ -21,10 +21,10 @@
 |:-----|:-----|:------|:------|
 |id    |int   | |primary key<br>not null auto_increment |
 |name  |varchar(32)|名称|not null|
-|actAdd1  |varchar(128)|活动地址1||
-|actAdd2  |varchar(128)|活动地址2||
-|actAdd3  |varchar(128)|活动地址3||
-|memNum    |int   |成员数目|default: 1|
+|actAddr1  |varchar(128)|活动地址1|default: null|
+|actAddr2  |varchar(128)|活动地址2|default: null|
+|actAddr3  |varchar(128)|活动地址3|default: null|
+|memNum    |int   |成员数目|default: 0|
 |mgmtUid    |int   |管理员ID|foreign key|
 
 ### 社团成员(corp_mem)
