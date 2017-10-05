@@ -6,9 +6,9 @@ var Corp = sequelize.define('corporation', {
     id:{type: Sequelize.INTEGER, primaryKey: true, autoIncrement: true, unique: true},
 
     name: {type: Sequelize.STRING, allowNull: false},       //名称
-    actAdd1: {type: Sequelize.STRING, defaultValue: null}, //活动地址1
-    actAdd2: {type: Sequelize.STRING, defaultValue: null}, //活动地址2
-    actAdd3: {type: Sequelize.STRING, defaultValue: null}, //活动地址3
+    actAddr1: {type: Sequelize.STRING, defaultValue: null}, //活动地址1
+    actAddr2: {type: Sequelize.STRING, defaultValue: null}, //活动地址2
+    actAddr3: {type: Sequelize.STRING, defaultValue: null}, //活动地址3
     memNum: {type: Sequelize.INTEGER, defaultValue: 0},    //成员数目
 }, {
     freezeTableName: true
@@ -22,17 +22,17 @@ var corp = Corp.sync({force: false});
 Corp.create = function(corp) {
     return Corp.create({
         name: corp.name,
-        actAdd1: corp.actAdd1,
-        actAdd2: corp.actAdd2,
-        actAdd3: corp.actAdd3
+        actAddr1: corp.actAddr1,
+        actAddr2: corp.actAddr2,
+        actAddr3: corp.actAddr3
     });
 };
 
 Corp.update = function(corp, newCorp) {
     corp.name = newCorp.name;
-    corp.actAdd1 = newCorp.actAdd1;
-    corp.actAdd2 = newCorp.actAdd2;
-    corp.actAdd3 = newCorp.actAdd3;
+    corp.actAddr1 = newCorp.actAddr1;
+    corp.actAddr2 = newCorp.actAddr2;
+    corp.actAddr3 = newCorp.actAddr3;
     corp.memNum = newCorp.memNum;
 
     corp.save();
